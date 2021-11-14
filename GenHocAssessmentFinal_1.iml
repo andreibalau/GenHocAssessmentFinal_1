@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/GenetHoc/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/GenetHoc/test" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="sapmachine-11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">

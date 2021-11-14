@@ -17,7 +17,7 @@ public class GenHocDNADatabase
     /**
      * You can change this code if you like. 
      */
-    List<DNASequence> database = new ArrayList<DNASequence>() ; 
+    List<DNASequence> database;
     
     
     /* DONT CHANGE THIS CODE NSD */ 
@@ -32,7 +32,7 @@ public class GenHocDNADatabase
     
     public GenHocDNADatabase(long seed ) 
     {
-        database = new ArrayList<DNASequence>(); 
+        database = new LinkedList<>();
         dice  = new Random() ;         
     }
     public void everythingWhichShouldBeImproved()
@@ -152,7 +152,7 @@ public class GenHocDNADatabase
     }
     public void resetDatabase()
     { 
-          this.database = new  ArrayList<DNASequence>() ; 
+          this.database = new  ArrayList<DNASequence>() ;
     }
     /** 
      *    By Dr Andrew Chemist Chief technology officer GenetHoc Ltd. 
@@ -260,8 +260,8 @@ public class GenHocDNADatabase
     { 
         LocalDateTime thenow2 = LocalDateTime.now(); 
         LocalDateTime oneSecond = thenow2.plusSeconds(1); 
-        do 
-        { 
+//        do
+//        {
             for( DNASequence it : database )
             { 
                 if( it.isDNA() == false  )
@@ -269,8 +269,8 @@ public class GenHocDNADatabase
                     return false; 
                 }
             }
-        thenow2 = LocalDateTime.now();
-        }while ( thenow2.isBefore(oneSecond  )  ); 
+//        thenow2 = LocalDateTime.now();
+//        }while ( thenow2.isBefore(oneSecond  )  );
         
         return true ; 
     }
@@ -374,7 +374,7 @@ public class GenHocDNADatabase
      */
     public  List<DNASequence>  searchForDNAFragment( String fragment ) 
     { 
-        List<DNASequence> results = new ArrayList<>() ; 
+        List<DNASequence> results = new LinkedList<>() ;
         
         for( DNASequence it : database )
         { 
@@ -406,30 +406,32 @@ public class GenHocDNADatabase
     }
      /**
      *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd. 
-     */ 
+     */
     public int removeDuplicateDNASequnces() 
     { 
-        List<DNASequence> duplicates = new ArrayList<DNASequence>() ; 
+        List<DNASequence> duplicates = new ArrayList<>() ;
+
         for( int a = 0 ; a <   database.size();a++)
-        { 
-            DNASequence thisOne = database.get(a); 
+        {
+            DNASequence thisOne = database.get(a);
            for(int b = a+1 ; b <  database.size(); b++   )
-           { 
-               DNASequence otherOne = database.get(b); 
-               assert  thisOne != otherOne ; // skip self 
+           {
+               DNASequence otherOne = database.get(b);
+               assert  thisOne != otherOne ; // skip self
                if( thisOne.sameDNASequence(otherOne.getDnaSequence()))
-               { 
-                  duplicates.add( otherOne ); 
+               {
+                  duplicates.add( otherOne );
                   thisOne.addCrimeScenseFrom(otherOne);
                }
-           } 
+           }
         }
-        
-        for( DNASequence dup : duplicates ) 
-        { 
-           database.remove( dup ); 
+
+        for( DNASequence dup : duplicates )
+        {
+           //TODO highly inefficient to remove from ArrayList if its not the last element since it will shift all the other elements
+           database.remove( dup );
         }
-        return duplicates.size(); 
+        return duplicates.size();
     }
     /**
      *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd.
@@ -438,7 +440,7 @@ public class GenHocDNADatabase
     public void testRemoveDuplicateDNASequnces(final int DUPLICATES  ) 
     { 
         
-        int before = database.size(); 
+        int before = database.size(); //it picks up the size before filling database with duplicates
         assert DUPLICATES < database.size();
         List<DNASequence> duplicates = new ArrayList<>() ; 
         
@@ -454,17 +456,17 @@ public class GenHocDNADatabase
         } 
         for(  DNASequence dup: duplicates)
         { 
-           addDNASequence( dup ); 
+           addDNASequence( dup ); //it fills database with duplicates
         }
         
         assert database.size() == before + DUPLICATES :"Error making duplicates" ; 
         
-        int removed =  removeDuplicateDNASequnces(); 
-      
+        int removed =  removeDuplicateDNASequnces(); // removes database duplicates
+
         assert removed == DUPLICATES : "Number of duplicates found wrong Removed=" +
                 removed + " before " + before + " " +  DUPLICATES + " " + 
                 database.size()  ; 
-        assert database.size()== before ;
+        assert database.size()== before ; //checks up that database size is same as before after duplicates deletion
   
     }
    

@@ -31,7 +31,7 @@ public class DNASequence
         this.dnaSequence = dnaSequence;
         this.sampleID = sampleID;
         this.enteredIntoDB = null ; 
-        this.crimeScenes = new LinkedList<String>() ; 
+        this.crimeScenes = new ArrayList<>() ;
     }
     
     
@@ -40,6 +40,7 @@ public class DNASequence
      */
     public void addCrimeScene(String whereID ) 
     {
+        //TODO: why "must be"? instead use Set collection and there's no need of checking up for duplicates
         if( this.crimeScenes.contains( whereID) ) return ; // must be 
         this.crimeScenes.add( whereID );
     }
@@ -88,7 +89,7 @@ public class DNASequence
        return  isDNA(  this.dnaSequence ); 
     }
     /**
-     *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd. 
+     *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd.
      */
     @Override
     public int hashCode() {
@@ -97,10 +98,10 @@ public class DNASequence
         return hash;
     }
     /**
-     *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd. 
+     *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd.
      */
     @Override
-    public boolean equals(Object obj) 
+    public boolean equals(Object obj)
     {
         if (this == obj) {
             return true;
@@ -117,6 +118,7 @@ public class DNASequence
         }
         return true;
     }
+
     /**
      *   By Dr Andrew Chemist Chief technology officer GenetHoc Ltd. 
      */
@@ -208,13 +210,14 @@ public class DNASequence
     /* 
             internal checking only not production code. 
     */
-    public static String randomString( int howLong , Random rn) 
+    public static StringBuilder randomString( int howLong , Random rn)
     { 
-        assert howLong > 0 :"No negatives"; 
-        String a = ""; 
+        assert howLong > 0 :"No negatives";
+        //TODO: switched to mutable string using StringBuilder, String is immutable a new object is created when sting is changed for var a
+        StringBuilder a = new StringBuilder();
         for( int b = 0 ; b < howLong ; b++  )
         { 
-            a += (char)(rn.nextInt('Z'-'A'))+ 'A'; 
+            a.append((char)(rn.nextInt('Z'-'A'))+ 'A');
         }
         return a; 
     }
@@ -233,7 +236,7 @@ public class DNASequence
         int a  = rn.nextInt(maxLocatins)+1 ; 
         while( a-- > 0 )
         { 
-            String where = randomString( 10, rn) ; 
+            String where = randomString( 10, rn).toString() ;
             it.addCrimeScene("CRMLOC"+where);
         } 
         return it; 
@@ -253,5 +256,5 @@ public class DNASequence
                      )) return false ; 
         }
         return true ; 
-    } 
+    }
 }
